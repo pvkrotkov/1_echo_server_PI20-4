@@ -3,7 +3,7 @@ from time import sleep
 
 sock = socket.socket()
 sock.setblocking(1)
-sock.connect(('10.38.165.12', 56789))
+sock.connect(('127.0.0.1', 56789))
 
 #msg = input()
 msg = "Hi!"
