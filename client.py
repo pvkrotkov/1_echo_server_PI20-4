@@ -1,16 +1,28 @@
+#!/usr/bin/env python3
+
 import socket
-from time import sleep
 
-sock = socket.socket()
-sock.setblocking(1)
-sock.connect(('10.38.165.12', 9090))
+HOST = '127.0.0.1'  # The server's hostname or IP address
+PORT = 65432        # The port used by the server
 
-#msg = input()
-msg = "Hi!"
-sock.send(msg.encode())
-
-data = sock.recv(1024)
-
-sock.close()
-
-print(data.decode())
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    try:
+        s.connect((HOST, PORT))  # connect to server
+        print('connection with server was successfull')
+    except:
+        print('Connection can not be complete')
+        exit()
+    try:
+        while True:
+            # enter the text we want to send to server
+            text = str(input('write text: '))
+            if text == 'exit':
+                break
+            s.send(text.encode())
+            print('we are sending data!')           # encode text to bytes
+            data = s.recv(1024)             # get data in bytes from server
+            print('we are received data!')
+            # decode and output data from server
+            print(data.decode())
+    except:
+        print('connection was lost')
