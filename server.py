@@ -8,7 +8,7 @@ HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
 PORT = 65432        # Port to listen on (non-privileged ports are > 1023)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))    # bind our socket to the given host and port
+    s.bind(('', PORT))    # bind our socket to the given host and port
     while True:
         command = input('enter the command: ')
         if command == 'listen':
@@ -23,6 +23,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 data = conn.recv(1024)
                 if data:
                     print('i got data!')
+                    print(data.decode())
                 else:
                     print('client was disconnected')
                     break
