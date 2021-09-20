@@ -1,16 +1,17 @@
 import socket
-from time import sleep
-
+print('создаем сокет ')
 sock = socket.socket()
-sock.setblocking(1)
-sock.connect(('10.38.165.12', 9090))
-
-#msg = input()
-msg = "Hi!"
-sock.send(msg.encode())
-
-data = sock.recv(1024)
-
-sock.close()
-
-print(data.decode())
+print(' соединяем с сервером')
+sock.connect(('localhost', 8083))
+print('если выход осуществляется не через exit,тогда клиент продолжает считывать строки')
+while True:  
+    msg =input()
+    if msg=="exit":
+        print('разрыв соединения с сервером')
+        break
+    print('посылаем данные серверу')
+    sock.send(msg.encode())  
+    print('принимаем данные от сервера')
+    data = sock.recv(1024)
+    print(data.decode())
+sock.close() 
