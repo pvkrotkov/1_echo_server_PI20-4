@@ -1,20 +1,24 @@
 import socket
 
-sock = socket.socket()
-sock.bind(('', 9090))
-sock.listen(0)
-conn, addr = sock.accept()
-print(addr)
 
-msg = ''
+SERVER_ADDRESS = ('', 9090)
 
-while True:
-	data = conn.recv(1024)
-	if not data:
-		break
-	msg += data.decode()
-	conn.send(data)
 
-print(msg)
+def _main():
+    sock = socket.socket()
+    sock.bind(SERVER_ADDRESS)
+    sock.listen()
+    conn, address = sock.accept()
 
-conn.close()
+    while True:
+        data = conn.recv(1024)
+        if not data:
+            break
+        conn.send(data)
+
+    conn.close()
+    sock.close()
+
+
+if __name__ == '__main__':
+    _main()
