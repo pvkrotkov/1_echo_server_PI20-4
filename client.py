@@ -1,16 +1,24 @@
 import socket
-from time import sleep
+from server import SERVER_ADDRESS
 
-sock = socket.socket()
-sock.setblocking(1)
-sock.connect(('10.38.165.12', 9090))
 
-#msg = input()
-msg = "Hi!"
-sock.send(msg.encode())
+EXIT = 'exit'
 
-data = sock.recv(1024)
 
-sock.close()
+def _main():
+    sock = socket.socket()
+    sock.connect(SERVER_ADDRESS)
 
-print(data.decode())
+    while True:
+        message = input()
+        if message == EXIT:
+            break
+        sock.send(message.encode())
+        data = sock.recv(1024).decode()
+        print(data)
+
+    sock.close()
+
+
+if __name__ == '__main__':
+    _main()
