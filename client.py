@@ -1,5 +1,6 @@
 import socket
-from server import SERVER_ADDRESS
+
+from server import PORT
 
 
 EXIT = 'exit'
@@ -7,17 +8,21 @@ EXIT = 'exit'
 
 def _main():
     sock = socket.socket()
-    sock.connect(SERVER_ADDRESS)
+    sock.connect(('localhost', PORT))
+    print('Соединение с сервером')
 
     while True:
         message = input()
         if message == EXIT:
             break
+        print(f'Отправка данных "{message}" серверу')
         sock.send(message.encode())
         data = sock.recv(1024).decode()
+        print(f'Прием данных "{data}" от сервера')
         print(data)
 
     sock.close()
+    print('Разрыв соединения с сервером')
 
 
 if __name__ == '__main__':

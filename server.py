@@ -1,15 +1,15 @@
 import socket
 
 
-SERVER_ADDRESS = ('', 9090)
+PORT = 9090
 
 
 def _main():
     sock = socket.socket()
-    sock.bind(SERVER_ADDRESS)
+    sock.bind(('', PORT))
     print('Запуск сервера')
     sock.listen()
-    print('Начало прослушивания порта', SERVER_ADDRESS[0])
+    print('Начало прослушивания порта', PORT)
     conn, addr = sock.accept()
     print('Подключение клиента', addr)
 
@@ -23,7 +23,7 @@ def _main():
         print(f'Отправка данных "{decoded}" клиенту', addr)
 
     conn.close()
-    print('Отключание клиента', addr)
+    print('Отключение клиента', addr)
     sock.close()
     print('Отключение сервера')
 
