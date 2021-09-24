@@ -5,7 +5,7 @@ sock = socket.socket()
 sock.connect(('localhost', 9090))
 print('Произошло сединение с сервером')
 while True:
-    msg = str(input('Введите строку или выход" чтобы выйти: '))
+    msg = str(input('Введите строку или "выход" чтобы выйти: '))
     sock.send(msg.encode())
     if msg == 'выход':
         break
