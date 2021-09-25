@@ -1,20 +1,17 @@
 import socket
 
-sock = socket.socket()
-sock.bind(('', 9090))
-print('Начало прослушивания порта 9090')
+HOST = "127.0.0.1"  # стандартный адрес
+PORT = 9090  # порт
+clients = dict()  # словарь вида "адрес: логин"
 
-sock.listen(1)
-conn, addr = sock.accept()
-print('Соединение подключено:', *addr)
-
-while True:
-    data = conn.recv(1024)
-    if not data:
-        break
-    print('Получено: ', data.decode('utf-8'))
-    conn.send(data)
-    print('Отправлено: ', data.decode('utf-8'))
-
-conn.close()
-print('Соединение отключено')
+with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server:  # открытие сокета
+    server.bind((HOST, PORT))  # установка хоста и порта
+    while True:
+        try:
+            data, address = server.recvfrom(1024)  # получение данных
+            if address not in clients.keys():  # проверка на наличие логина у полученного адреса
+                clients.update({address: data.decode()})  # обновление словаря логинов
+                continue
+            print(f"{clients[address]}: {data.decode()}")  # вывод сообщения
+        except Exception as e:
+            print("warning " + str(e))  # вывод служебного сообщения о возможной ошибке

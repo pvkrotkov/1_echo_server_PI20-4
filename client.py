@@ -1,15 +1,13 @@
 import socket
 
-sock = socket.socket()
-sock.connect(('localhost', 9090))
-print('Соединено с сервером')
-while True:
-    line = input()
-    sock.send(line.encode("utf-8"))
-    print(f'Отправлено серверу: {line}')
-    data = sock.recv(1024)
-    print(f"Получено от сервера: {data.decode('utf-8')}")
-    if line == "exit":
-        sock.close()
-        break
-print('Соединено с сервером разорвано')
+PORT = 9090  # порт
+
+with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as client:  # открытие сокета
+    client.connect(("localhost", PORT))  # соединение с сервером
+    client.send(input("type in your login: ").encode())  # запрос логина
+    while True:
+        try:
+            message = input("send message: ")  # запрос сообщения
+            client.send(message.encode())  # отправка сообщение
+        except Exception as e:
+            print("warning " + str(e))  # вывод служебного сообщения о возможной ошибке
