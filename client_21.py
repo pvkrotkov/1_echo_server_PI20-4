@@ -16,7 +16,7 @@ while True:
         sock.close()
         sys.exit(1)
     if data == 'exit':
-        print("Другой участник чата завершил общение")
+        print("участник чата завершил общение")
         break
     data = name + ': ' + data
     data = data.encode()
