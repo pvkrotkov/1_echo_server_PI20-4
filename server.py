@@ -1,18 +1,22 @@
-import socket
+from socket import *
 
-sock = socket.socket()
-sock.bind(('', 9090))
-sock.listen(1)
-conn, addr = sock.accept()
-print('Соединение подключено')
+host = 'localhost'
+port = 9090
+addr = (host, port)
+connections = []
+sock = socket(AF_INET, SOCK_DGRAM)
 
+sock.bind(addr)
+print('Соединение установлено')
 while True:
-    data = conn.recv(1024)
-    if not data:
-        print('Клиент был отключен')
-        break
-    print('Прием данных от клиента: ', data.decode())
-    conn.send(data)
-    print('Отправка данных клиенту: ', data.decode())
+    print("Данные клиентов...")
+
+    conn, addr = sock.recvfrom(1024)
+    data = conn.decode()
+    print(conn.decode())
+
+    out = data
+    out = out.encode()
+    sock.sendto(out, addr)
 print('Соединение отключено')
 conn.close()

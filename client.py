@@ -1,15 +1,30 @@
-import socket
-sock = socket.socket()
-sock.connect(('localhost', 9090))
-print("Произошло подключение клиента")
-while True:
-    msg = input('Напишите строку: ')
-    sock.send(msg.encode())
-    if msg == 'exit':
-        sock.close()
-        break
-    print(f'Отправка данных серверу {msg}')
-    data = sock.recv(1024)
-    print(f"Получение данных от сервера: {data.decode()}")
+from socket import *
+import sys
 
-print('Соединение разорвано')
+host = 'localhost'
+port = 9090
+addr = (host, port)
+print("Произошло подключение клиента")
+sock  = socket(AF_INET, SOCK_DGRAM)
+name =''
+while name == '':
+    name = input('Введите никнейм: ')
+while True:
+    data = input("Введите данные для сервера: ")
+    if not data:
+        print('Соединение разорвано')
+        sock.close()
+        sys.exit(1)
+    if data == 'exit':
+        print("участник чата завершил общение")
+        break
+    data = name + ': ' + data
+    check_1 = name + ': ' + data
+    data = data.encode()
+    sock.sendto(data, addr)
+    data = sock.recvfrom(1024)
+    if name in data[0].decode():
+        pass
+    else:
+        print(f'Данные от сервера: {data[0].decode()}, {data[1]}')
+        print(check_1)
