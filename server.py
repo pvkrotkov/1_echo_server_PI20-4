@@ -1,22 +1,20 @@
 from socket import *
 
-host = 'localhost'
-port = 9090
-addr = (host, port)
+addr = ('localhost', 1025)
 connections = []
 sock = socket(AF_INET, SOCK_DGRAM)
 
 sock.bind(addr)
-print('Соединение установлено')
+print('Server is running')
 while True:
-    print("Данные клиентов...")
+    print("clients data...")
 
     conn, addr = sock.recvfrom(1024)
     data = conn.decode()
     print(conn.decode())
 
-    out = data
+    out = input('Reply: ')
     out = out.encode()
-    sock.sendto(out, addr)
-print('Соединение отключено')
+    sock.sendto(out,addr)
+print('Connection has been lost')
 conn.close()
