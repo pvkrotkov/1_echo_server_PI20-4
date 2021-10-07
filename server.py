@@ -1,20 +1,19 @@
 import socket
 
-sock = socket.socket()
-sock.bind(('', 9090))
-sock.listen(0)
-conn, addr = sock.accept()
-print(addr)
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind(('localhost', 23618))
+print('Начало диалога: ')
 
-msg = ''
 
 while True:
-	data = conn.recv(1024)
-	if not data:
-		break
-	msg += data.decode()
-	conn.send(data)
+    data, addr = sock.recvfrom(1024)
+    msg = data.decode('utf-8')
+    if 'exit' in msg:
+        print("Участник чата завершил диалог: ")
+        sock.close()
+        break
+    print(msg)
+    replymsg = input('Ответить: ')
+    sock.sendto(replymsg.encode('utf-8'), addr)
 
-print(msg)
-
-conn.close()
+sock.close() 
