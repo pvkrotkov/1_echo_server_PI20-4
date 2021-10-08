@@ -1,21 +1,19 @@
 import socket
 SERVER_ADDRESS = ('127.0.0.1', 9090)
 sock = socket.socket()
-sock.bind(SERVER_ADDRESS)
-print('Запуск сервера', SERVER_ADDRESS)
-sock.listen()
-print('Начало прослушивания порта', SERVER_ADDRESS[1])
-conn, addr = sock.accept()
-print('Подключение клиента', addr)
+sock.connect(SERVER_ADDRESS)
+print('Соединение с сервером', SERVER_ADDRESS)
 while True:
-    data = conn.recv(1024)
-    if not data:
+    message = input()
+    if message == 'exit':
         break
-    print(f'Прием данных {data.decode()} от клиента', addr)
-    conn.send(data)
-    print(f'Отправка данных {data.decode()} клиенту', addr)
-print('Отключение клиента', addr)
+    sock.send(message.encode())
+    print(f'Отправка данных {message} серверу', SERVER_ADDRESS)
+    data = sock.recv(1024)
+    data_decode = data.decode()
+    print(f'Прием данных {data_decode} от сервера', SERVER_ADDRESS)
+    print(data_decode)
 
-conn.close()
+print(data.decode())
 sock.close()
-print('Остановка сервера', SERVER_ADDRESS)
+print ('Разрыв соединения с сервером', SERVER_ADDRESS)
