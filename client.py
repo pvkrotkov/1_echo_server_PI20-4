@@ -1,16 +1,21 @@
-import socket
-from time import sleep
+mport socket
 
-sock = socket.socket()
-sock.setblocking(1)
-sock.connect(('10.38.165.12', 9090))
+def ser_ver():
+    sock = socket.socket()  #Создание сокета и соединение с сервером        
+    sock.connect(('localhost', 9090))
+    print('Соединение с сервером')
 
-#msg = input()
-msg = "Hi!"
-sock.send(msg.encode())
+    while True:         #Если выход происходит не через "exit", то клиент продолжает считывание строк
+        mess = input()
+        if mess == 'exit':
+            break
+        print(f'Отправка данных "{mess}" серверу')
+        sock.send(mess.encode())
+        data = sock.recv(1024).decode()               #Отправка и приём данных от сервера
+        print(f'Прием данных "{data}" от сервера')
+        print(data)
 
-data = sock.recv(1024)
+    sock.close()
+    print('Разрыв соединения с сервером')
 
-sock.close()
-
-print(data.decode())
+ser_ver()
